@@ -1,19 +1,34 @@
-# 🖼️ CIFAR-10 Image Classifier (v1.0 - Simple CNN)
+# 🧠 CIFAR-10 Deep CNN Classifier (v2.0)
 
-This repository implements a simple CNN-based image classifier trained on the **CIFAR-10** dataset using **PyTorch**.
+This version improves upon the baseline CNN by significantly deepening the architecture (6 convolutional layers) to achieve higher accuracy on the CIFAR-10 dataset.
 
-> 🎯 Final test accuracy with this version: **81.43%**
+> 🎯 Final test accuracy: **87.43%** (deep CNN + regularization + data augmentation)
 
 ---
 
-## 🚀 Features
+## 🚀 Features (v2.0)
 
-- ✅ Custom Convolutional Neural Network (3 conv layers)
-- ✅ Batch Normalization & Dropout for regularization
-- ✅ TensorBoard for training visualization
-- ✅ Early stopping & best model checkpointing
-- ✅ Reproducible training with fixed seeds
-- ✅ Compatible with Apple Silicon (MPS), CUDA, or CPU
+- ✅ Deep CNN architecture (6 convolutional layers)
+- ✅ Batch Normalization & Dropout (0.3)  
+- ✅ Data Augmentation: horizontal flip & random crop  
+- ✅ Best model saving (based on validation accuracy)  
+- ✅ MPS (Apple Silicon) / CUDA support  
+- ✅ TensorBoard logging  
+- ✅ Training reproducibility with fixed seeds  
+- ✅ Early stopping (patience 12 epochs)
+
+---
+
+## 🧾 Results
+
+| Epochs | Accuracy | Loss     |
+|--------|----------|----------|
+| 30     | **87.43%**   | ~768     |
+
+- Dataset: CIFAR-10 (50k train / 10k test)
+- Optimizer: AdamW (lr=0.0005, weight_decay=1e-4)
+- Scheduler: StepLR (step_size=10, gamma=0.1)
+- Input normalization: CIFAR-10 statistics
 
 ---
 
@@ -21,17 +36,18 @@ This repository implements a simple CNN-based image classifier trained on the **
 
 ```
 .
-├── data/               # CIFAR-10 data (downloaded automatically)
-├── main.py             # Training/evaluation pipeline
-├── model.py            # CNN model definition
-├── dataset.py          # Data loaders and transforms
-├── train.py            # Training loop with early stopping
-├── evaluate.py         # Evaluation function
+├── main.py             # Launcher with fixed seed
+├── model.py            # CNN 6-layer architecture
+├── dataset.py          # Augmented CIFAR-10 loader
+├── train.py            # Training loop
+├── evaluate.py         # Evaluation helper
 ├── config.py           # Device configuration
-├── utils.py            # Seed setting and helpers
-├── best_model.pth      # Best model weights (optional)
+├── utils.py            # Seeding, checkpointing
 ├── runs/               # TensorBoard logs
-└── README.md
+├── best_model.pth      # Trained weights
+├── README.md
+├── CHANGELOG.md
+└── requirements.txt
 ```
 
 ---
@@ -39,57 +55,26 @@ This repository implements a simple CNN-based image classifier trained on the **
 ## 🧪 Quickstart
 
 ```bash
-# Clone and create virtual env
 git clone https://github.com/SabaMG/cifar10-cnn-pytorch.git
 cd cifar10-cnn-pytorch
-python3 -m venv .venv
-source .venv/bin/activate  # or .venv\Scripts\activate on Windows
-
-# Install requirements
+python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
-
-# Train the model
 python main.py
+```
 
-# Visualize logs (optional)
+Open TensorBoard:
+
+```bash
 tensorboard --logdir=runs
 ```
 
 ---
 
-## 🧾 Results
-
-| Epochs | Accuracy | Loss    |
-|--------|----------|---------|
-| 30     | **81.43%**   | ~796    |
-
-Training configuration:
-- CNN (3 conv layers + 2 FC layers)
-- Dropout 0.3
-- Batch Normalization
-- AdamW optimizer
-- StepLR scheduler
-- Early stopping
-
----
-
-## 🛠️ Dependencies
-
-- Python 3.11+
-- torch
-- torchvision
-- matplotlib *(optional for debug or plotting)*
-- tensorboard *(optional for logs visualization)*
-
----
-
 ## 📌 Notes
 
-- This is version **v1.0** with a simple CNN architecture.
-- Future versions will explore:
-  - ✅ Deeper CNNs (v1.1)
-  - ✅ ResNet-18 (v2.0)
-  - ✅ WideResNet-28-10 (v3.0)
+- This version focuses on deeper architectures.
+- Early stopping is enabled (max 30 epochs with patience of 12).
+- You can adjust the architecture in `model.py` and augmentations in `dataset.py`.
 
 ---
 

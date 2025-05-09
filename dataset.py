@@ -4,13 +4,13 @@ from torch.utils.data import DataLoader
 def get_data_loaders(batch_size=64):
     # CIFAR-10 : RGB images (3 channels), 32x32 pixels
     transform_train = transforms.Compose([
-        transforms.RandomHorizontalFlip(),
         transforms.RandomCrop(32, padding=4),
+        transforms.RandomHorizontalFlip(),
+        transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.1),
+        transforms.RandomRotation(15),
         transforms.ToTensor(),
-        transforms.Normalize(
-            mean=(0.4914, 0.4822, 0.4465),
-            std=(0.2023, 0.1994, 0.2010)
-        )
+        transforms.Normalize((0.4914, 0.4822, 0.4465), 
+                            (0.2470, 0.2435, 0.2616)),
     ])
 
     transform_test = transforms.Compose([
