@@ -1,23 +1,26 @@
-# 📘 Changelog
+# 📄 Changelog
 
-All notable changes to this project will be documented in this file.  
-This project follows [Semantic Versioning](https://semver.org/).
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
 
-## [v1.0] - 2024-05-09
+## [v1.0] - 2025-05-09
 
-### 🎉 Added
-- Initial CNN model for CIFAR-10 classification (3 convolutional layers + 2 FC).
-- Support for **Dropout**, **Batch Normalization** and **AdamW optimizer**.
-- Custom training loop with:
-  - Early stopping
-  - Best model checkpointing
-  - Learning rate scheduling
-- **TensorBoard** integration for loss, accuracy, weights, and image samples.
-- Configuration file to set training parameters (device, path).
-- Reproducibility: fixed random seed support.
-- Modularized architecture with `main.py`, `model.py`, `dataset.py`, `train.py`, `evaluate.py`, etc.
+### Added
+- Initial training pipeline for CIFAR-10 classification using a basic CNN.
+- Modular project structure with `model.py`, `train.py`, `dataset.py`, `evaluate.py`, and `main.py`.
+- Support for `AdamW` optimizer and learning rate scheduling (`StepLR`).
+- Label smoothing loss with `nn.CrossEntropyLoss(label_smoothing=0.1)`.
+- TensorBoard logging: loss, accuracy, learning rate, weight histograms.
+- Best model saving to `best_model.pth` and automatic loading after training.
+- MPS support for Apple Silicon (`config.device`).
+- Early stopping mechanism.
+- Seed reproducibility and multi-seed support.
+- Project README.md with usage instructions.
+- `.gitignore` and `requirements.txt` prepared for clean environments.
 
 ### 📊 Performance
 - ✅ Final test accuracy: **81.43%**
