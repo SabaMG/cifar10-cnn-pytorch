@@ -4,7 +4,7 @@ import sys
 import torch
 from torchvision import transforms
 from PIL import Image, ImageOps
-from model import CNN  # assumes your model class is CNN
+from model import CNN
 from config import device
 import matplotlib.pyplot as plt
 import numpy as np

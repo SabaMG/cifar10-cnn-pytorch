@@ -1,5 +1,5 @@
 from dataset import get_data_loaders
-from model import CNN
+from model import ResNet18
 from train import train
 from evaluate import evaluate
 from utils import set_seed
@@ -13,7 +13,7 @@ if __name__ == "__main__":
 
     train_loader, test_loader = get_data_loaders()
 
-    model = CNN().to(device)
+    model = ResNet18().to(device)
     optimizer = torch.optim.AdamW(model.parameters(), lr=0.0005, weight_decay=1e-4)
     loss_fn = nn.CrossEntropyLoss(label_smoothing=0.1)
 

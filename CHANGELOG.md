@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [v3.0] - 2025-05-10
+
+### Added
+- 📦 Integration of **ResNet-18** architecture as the model backbone.
+- `torchvision.models.resnet18(pretrained=False)` used with modified input/output layers.
+- Compatibility with CIFAR-10 (RGB input, 10-class output).
+- TensorBoard logs support for ResNet-18 training.
+- Model performance saved and evaluated as `best_model.pth`.
+
+### Changed
+- `model.py`: switched from custom CNN to ResNet-18 backbone.
+- `main.py`: updated model call, training and evaluation unchanged.
+- `README.md`: added version comparison, model details, and final results.
+
+### 📊 Performance
+- ✅ Final test accuracy: **90.99%**
+- ✅ Model: ResNet-18 (modified for CIFAR-10, trained from scratch)
+
+---
+
 ## [v2.0] - 2025-05-09
 
 ### Added
@@ -49,11 +69,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## 🔜 Planned (v3.0+)
-- ResNet-18 backbone integration.
+## 🔜 Planned (v4.0)
 - WideResNet-28-10 for state-of-the-art performance.
 - Improved data augmentation (Cutout, ColorJitter, etc.).
 - Learning rate warmup and cosine decay.
+- Automated inference script from image file.
+- Multi-model comparison utility with CLI.
 
 ---
 
