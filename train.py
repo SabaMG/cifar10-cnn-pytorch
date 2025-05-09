@@ -4,15 +4,14 @@ import torch.nn as nn
 from evaluate import evaluate
 from config import device
 from torchvision.utils import make_grid
-from torch.optim.lr_scheduler import StepLR
-
+from torch.optim.lr_scheduler import CosineAnnealingLR
 
 def train(model, train_loader, test_loader, optimizer, loss_fn, epochs=30, save_path="best_model.pth", log_dir="cnn_train"):
     best_accuracy = 0.0
     count = 0
-    limit = 12
-    
-    scheduler = StepLR(optimizer, step_size=10, gamma=0.1)
+    patience = 12
+
+    scheduler = CosineAnnealingLR(optimizer, T_max=epochs)
 
     writer = SummaryWriter(log_dir="runs/" + log_dir)
     for epoch in range(epochs):
@@ -25,34 +24,43 @@ def train(model, train_loader, test_loader, optimizer, loss_fn, epochs=30, save_
             output = model(inputs)
             loss = loss_fn(output, labels)
             loss.backward()
+
+            # ✅ Gradient clipping (to avoid exploding gradients)
+            torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=5.0)
+
             optimizer.step()
-            current_lr = optimizer.param_groups[0]['lr']
-            writer.add_scalar("LearningRate", current_lr, epoch)
             total_loss += loss.item()
+
+        scheduler.step()
+        current_lr = scheduler.get_last_lr()[0]
+        writer.add_scalar("LearningRate", current_lr, epoch)
 
         print(f"Epoch {epoch+1} - Loss: {total_loss:.4f}")
 
-        # Evaluate after each epoch
         acc = evaluate(model, test_loader, verbose=False)
         print(f"Test Accuracy: {acc:.2f}%")
+
         writer.add_scalar("Loss/train", total_loss, epoch)
         writer.add_scalar("Accuracy/test", acc, epoch)
 
-        # Save model if accuracy improves
         if acc > best_accuracy:
             best_accuracy = acc
             torch.save(model.state_dict(), save_path)
             print(f"✅ Saved new best model with accuracy: {acc:.2f}%")
             count = 0
+        else:
+            count += 1
+
         for name, param in model.named_parameters():
             writer.add_histogram(name, param, epoch)
-        if epoch == 0:  # pour ne le faire qu’une fois
+
+        if epoch == 0:
             image_grid = make_grid(inputs[:16].cpu(), nrow=4, normalize=True)
             writer.add_image("Sample inputs", image_grid, epoch)
-        count += 1
-        if count > limit:
-            print("Early stopping")
+
+        if count > patience:
+            print("⏹️ Early stopping triggered")
             break
-        scheduler.step()
-    print("tansorboard logs saved in: ", log_dir)
+
+    print("📁 TensorBoard logs saved in:", log_dir)
     writer.close()

@@ -2,8 +2,30 @@
 
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),  
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+---
+
+## [v3.1] - 2025-05-10
+
+### Added
+- Enhanced **data augmentation**: RandomCrop, RandomHorizontalFlip, ColorJitter, RandomRotation.
+- Switched scheduler from `StepLR` ➜ **CosineAnnealingLR** for smoother learning rate decay.
+- Added **Dropout(0.1)** after the fully connected layer in ResNet-18 for better regularization.
+- Maintained **label smoothing** with `CrossEntropyLoss(label_smoothing=0.1)`.
+- TensorBoard logs continue to track training with all new features.
+- Updated `README.md` and performance logs accordingly.
+
+### Changed
+- `dataset.py`: stronger augmentation transforms added.
+- `train.py`: replaced `StepLR` with `CosineAnnealingLR`.
+- `model.py`: slight change to ResNet FC to include dropout.
+- `main.py`: no structural change, but training includes new optimizer/scheduler settings.
+
+### 📊 Performance
+- ✅ Final test accuracy: **92.47%**
+- ✅ Model: ResNet-18 with advanced augmentation, CosineAnnealingLR, dropout
 
 ---
 
@@ -71,7 +93,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 🔜 Planned (v4.0)
 - WideResNet-28-10 for state-of-the-art performance.
-- Improved data augmentation (Cutout, ColorJitter, etc.).
+- Cutout regularization in augmentation.
 - Learning rate warmup and cosine decay.
 - Automated inference script from image file.
 - Multi-model comparison utility with CLI.

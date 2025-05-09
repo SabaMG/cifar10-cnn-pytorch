@@ -2,8 +2,8 @@
 
 This project implements a deep learning pipeline to classify CIFAR-10 images using PyTorch, progressively improving from a basic CNN to a ResNet-18 backbone.
 
-> 🚀 Current version: **v3.0**
-> 🎯 Final test accuracy: **90.99%** (ResNet-18, label smoothing, early stopping, LR scheduler, MPS support)
+> 🚀 Current version: **v3.1**
+> 🎯 Final test accuracy: **92.47%** (ResNet-18 + stronger augmentation + advanced regularization)
 
 ---
 
@@ -12,8 +12,10 @@ This project implements a deep learning pipeline to classify CIFAR-10 images usi
 - ✅ ResNet-18 backbone for high-accuracy image classification
 - ✅ Modular codebase: model, data, training, evaluation, config
 - ✅ Training reproducibility with fixed random seeds
-- ✅ `AdamW` optimizer with `StepLR` scheduler
+- ✅ `AdamW` optimizer with **CosineAnnealingLR** scheduler
 - ✅ Label Smoothing via `CrossEntropyLoss(label_smoothing=0.1)`
+- ✅ **Dropout(0.1)** regularization added after FC layer
+- ✅ **Advanced Data Augmentation**: crop, flip, color jitter, rotation
 - ✅ Best model saving during training (`best_model.pth`)
 - ✅ TensorBoard logging: loss, accuracy, learning rate, weight histograms
 - ✅ MPS support for Apple Silicon (macOS)
@@ -55,11 +57,12 @@ tensorboard --logdir=runs
 
 ## 🧠 Model Versions
 
-| Version | Architecture     | Description                             | Accuracy   |
-|---------|------------------|-----------------------------------------|------------|
-| v1.0    | Basic CNN (3 conv) | Lightweight, easy to train              | 81.43%     |
-| v2.0    | Deep CNN (6 conv) | Larger capacity, dropout, batchnorm     | 87.43%     |
-| v3.0    | ResNet-18         | Deeper pretrained-style model, stable   | **90.99%** |
+| Version | Architecture     | Description                                           | Accuracy   |
+|---------|------------------|-------------------------------------------------------|------------|
+| v1.0    | Basic CNN (3 conv) | Lightweight, easy to train                            | 81.43%     |
+| v2.0    | Deep CNN (6 conv) | Larger capacity, dropout, batchnorm                   | 87.43%     |
+| v3.0    | ResNet-18         | Deeper pretrained-style model, stable                 | 90.99%     |
+| v3.1    | ResNet-18 + Aug   | Strong augmentation, dropout, Cosine LR, smoothing    | **92.47%** |
 
 ---
 
@@ -87,6 +90,7 @@ tensorboard --logdir=runs
 - Trained on Apple Silicon (MPS backend), supports CPU/GPU as well
 - `train.py` supports early stopping, checkpointing, and logging by default
 - Model performance is logged with TensorBoard after every epoch
+- Strong regularization makes this model more robust and generalizable
 
 ---
 
